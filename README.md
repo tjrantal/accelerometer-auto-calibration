@@ -1,0 +1,1 @@
+Attempt to implement van Hees et al (J Appl Physiol 117: 738–744, 2014) accelerometer autocalibration algorithm with Anrdoid smartphone accelerometer sample. The acceleration sample comprises the phone lying on a table for a few seconds in multiple orientations. 
