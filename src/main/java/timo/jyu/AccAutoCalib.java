@@ -8,27 +8,26 @@ Written by tjrantal at gmail dot com. Released into the public domain.
 public class AccAutoCalib{
 	private double sdThresh;	//g threshold to consider an epoch to not have movement
 	private double epochLength;	//[s] for feature extraction (20 used by van Hees et al). Data analysed in non-overlapping  epochs
-	private double sRate;
 	private Features features; //Store features here
 
 	
 	/**Constructors
 	Store only features in this class -> can discard the raw data after instantiation*/
-	public AccAutoCalib(double[] x, double[] y, double[] z,long[] tStamps,double sRate){
-		this(x,y,z,tStamps,sRate,20,0.013);
+	public AccAutoCalib(double[] x, double[] y, double[] z,long[] tStamps){
+		this(x,y,z,tStamps,20,0.013);
 	}
 	
 		
-	public AccAutoCalib(double[] x, double[] y, double[] z,long[] tStamps,double sRate, double epochLength){
-		this(x,y,z,tStamps,sRate,epochLength,0.013);
+	public AccAutoCalib(double[] x, double[] y, double[] z,long[] tStamps, double epochLength){
+		this(x,y,z,tStamps,epochLength,0.013);
 	}
 	
 	/**Store only features in this class -> can discard the raw data after instantiation*/
-	public AccAutoCalib(double[] x, double[] y, double[] z,long[] tStamps,double sRate, double epochLength, double sdThresh){
+	public AccAutoCalib(double[] x, double[] y, double[] z,long[] tStamps, double epochLength, double sdThresh){
 		this.epochLength = epochLength;
 		this.sdThresh = sdThresh;
 		features = new Features();
-		features.getFeatures(x,y,z,tStamps,sRate,epochLength);
+		features.getFeatures(x,y,z,tStamps,epochLength);
 	}
 	
 	

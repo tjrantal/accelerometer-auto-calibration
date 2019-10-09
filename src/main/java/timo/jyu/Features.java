@@ -33,12 +33,11 @@ public class Features{
 		@param y y-axis acceleration in g
 		@param z z-axis acceleration in g
 		@param t time stamps in milliseconds
-		@param sRate sampling rate in Hz
 		@param epoch non-overlapping epoch length in s
 		
 	*/
-	public void getFeatures(double[] x, double[] y, double[] z, long[] t, double sRate, double epoch){
-		long increment = (long) (sRate*epoch);
+	public void getFeatures(double[] x, double[] y, double[] z, long[] t, double epoch){
+		long increment = ((long) (epoch))*1000l;
 		long nextTarget = t[0]+increment;
 		long prevStartStamp = t[0];
 		
