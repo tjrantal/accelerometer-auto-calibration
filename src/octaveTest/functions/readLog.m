@@ -36,7 +36,12 @@ function data = readLog(fileIn,separator,headerLines)
 			fh = fopen(fileIn,'r');
 			fileBytes = uint8(fread(fh));	%Read data into memory
 			fclose(fh);
-			fileBytes(fileBytes == 0x2c) = uint8(0x2e);	%Replace all commas (0x2c) with dots (0x2e)
+%             keyboard;
+%             if exist('OCTAVE_VERSION', 'builtin')
+%                 fileBytes(fileBytes == 0x2c) = uint8(0x2e);	%Replace all commas (0x2c) with dots (0x2e)
+%             else
+                fileBytes(fileBytes == uint8(hex2dec('2c'))) = uint8(hex2dec('2e'));	%Replace all commas (0x2c) with dots (0x2e)
+%             end
 			%Write data into a temporary file
 			tmpName = [tempname '.txt'];	%Get temporary file name
 			fh = fopen(tmpName,'w');
