@@ -72,6 +72,19 @@ public class AccAutoCalib{
 		return bo.getFit();
 	}
 	
+	public double[] getLMFit(){
+		LMOptimisation bo;
+		double[][] mm = {Utils.minmax(toOptimisation[0]),Utils.minmax(toOptimisation[1]),Utils.minmax(toOptimisation[2])};
+		if (Utils.max(new double[]{mm[0][0],mm[1][0],mm[2][0]}) < -0.3 && Utils.min(new double[]{mm[0][1],mm[1][1],mm[2][1]}) > 0.3){
+			bo = new LMOptimisation(toOptimisation);
+		}else{
+			System.out.println("Sufficient data was not found to calibrate");
+			return null;
+		}
+		return bo.getFit();
+	}
+	
+	
 	public double[] getOptimX(){
 		return toOptimisation[0];
 	}
