@@ -17,13 +17,22 @@ acc = data.data(:,2:4)./9.81;	%Acceleration in g
 
 javaClass = javaObject('timo.jyu.AccAutoCalib',acc(:,1),acc(:,2),acc(:,3),int64(data.data(:,1)),epochLength,sdThresh);
 calibCoeffs = javaMethod('getFit',javaClass);
+calibCoeffsw = javaMethod('getWeightedFit',javaClass);  %With weights
 
+[calibCoeffs'; calibCoeffsw']
 
 %Test calibration with matlab
 joptimData = [javaMethod('getOptimX',javaClass), javaMethod('getOptimY',javaClass), javaMethod('getOptimZ',javaClass)];
-global observedData
+global observedData weights
 observedData = joptimData;
+weights = ones(size(observedData,1),1);
 optimised = lsqnonlin(@optimiseCalib,[0,1,0,1,0,1]);	%Optimisation without weights
+optimisedw = lsqnonlin(@optimiseCalibWithWeight,[0,1,0,1,0,1]);	%Optimisation with weights
+
+
+[optimisedw; calibCoeffsw']
+
+[optimised; optimisedw]
 
 origRes = sqrt(sum(observedData.^2,2));
 calibratedData = applyCalib(observedData,optimised);

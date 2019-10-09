@@ -28,11 +28,8 @@ public class AccAutoCalib{
 		this.sdThresh = sdThresh;
 		features = new Features();
 		features.getFeatures(x,y,z,tStamps,epochLength);
-	}
-	
-	public double[] getFit(){
-		//Take out epochs with more than sdThresh variation on any axis
 		Features tempFeat = new Features();
+		//Take out epochs with more than sdThresh variation on any axis
 		for (int i = 0;i<features.x.size(); ++i){
 			if (features.sdx.get(i) < sdThresh && features.sdy.get(i) < sdThresh && features.sdz.get(i) < sdThresh){
 				tempFeat.x.add(features.x.get(i));
@@ -45,20 +42,34 @@ public class AccAutoCalib{
 			toOptimisation[0] = tempFeat.getPrimitive(tempFeat.x);
 			toOptimisation[1] = tempFeat.getPrimitive(tempFeat.y);
 			toOptimisation[2] = tempFeat.getPrimitive(tempFeat.z);
+		}else{
+			System.out.println("Fewer than 10 data points remained");
+		}
+		
+	}
+	
+	public double[] getFit(){
+			BOBYQAOptimisation bo;
 			double[][] mm = {Utils.minmax(toOptimisation[0]),Utils.minmax(toOptimisation[1]),Utils.minmax(toOptimisation[2])};
 			if (Utils.max(new double[]{mm[0][0],mm[1][0],mm[2][0]}) < -0.3 && Utils.min(new double[]{mm[0][1],mm[1][1],mm[2][1]}) > 0.3){
-				
+				bo = new BOBYQAOptimisation(toOptimisation);
 			}else{
 				System.out.println("Sufficient data was not found to calibrate");
 				return null;
 			}
-			BOBYQAOptimisation bo = new BOBYQAOptimisation(toOptimisation);
 			return bo.getFit();
+	}
+	
+	public double[] getWeightedFit(){
+		BOBYQAOptimisationWeights bo;
+		double[][] mm = {Utils.minmax(toOptimisation[0]),Utils.minmax(toOptimisation[1]),Utils.minmax(toOptimisation[2])};
+		if (Utils.max(new double[]{mm[0][0],mm[1][0],mm[2][0]}) < -0.3 && Utils.min(new double[]{mm[0][1],mm[1][1],mm[2][1]}) > 0.3){
+			bo = new BOBYQAOptimisationWeights(toOptimisation);
 		}else{
-			System.out.println("Fewer than 10 data points remained");
+			System.out.println("Sufficient data was not found to calibrate");
 			return null;
 		}
-		
+		return bo.getFit();
 	}
 	
 	public double[] getOptimX(){
