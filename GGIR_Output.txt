@@ -1,0 +1,22 @@
+> create_test_acc_csv(50,24*60*2)
+> test = g.calibrate("123A_testaccfile.csv",use.temp=F)
+
+Loading block: 1 2 3 4 5
+Summary of autocalibration procedure:
+
+Status: recalibration attempted with all available data, but possibly not good enough: Check calibration error variable to varify this
+Calibration error (g) before: 0.0190884831317478
+Callibration error (g) after: 0.00479961277547854
+Offset correction x: -0.000669426836644031 
+Offset correction y: 5.65010201476697e-07 
+Offset correction z: -2.31543715662464e-05
+Scale correction x: 0.984798233302441 
+Scale correction y: 0.984193867141311 
+Scale correction z: 0.984380532090462
+Number of hours used: 47
+Number of 10 second windows around the sphere: 10362
+Temperature used (if available): FALSE
+Temperature offset (if temperature is available) x: 0 
+Temperature offset (if temperature is available) y: 0 
+Temperature offset (if temperature is available) z: 0
+
