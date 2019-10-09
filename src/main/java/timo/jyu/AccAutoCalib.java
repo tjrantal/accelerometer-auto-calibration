@@ -7,14 +7,14 @@ Written by tjrantal at gmail dot com. Released into the public domain.
 
 public class AccAutoCalib{
 	private double sdThresh;	//g threshold to consider an epoch to not have movement
-	private double epochLength;	//[s] for feature extraction (20 used by van Hees et al). Data analysed in non-overlapping  epochs
+	private double epochLength;	//[s] for feature extraction (10 used by van Hees et al). Data analysed in non-overlapping  epochs
 	private Features features; //Store features here
 	private double[][] toOptimisation = null;
 	
 	/**Constructors
 	Store only features in this class -> can discard the raw data after instantiation*/
 	public AccAutoCalib(double[] x, double[] y, double[] z,long[] tStamps){
-		this(x,y,z,tStamps,20,0.013);
+		this(x,y,z,tStamps,10,0.013);
 	}
 	
 		

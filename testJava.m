@@ -37,8 +37,10 @@ optimisedw = lsqnonlin(@optimiseCalibWithWeight,[0,1,0,1,0,1]);	%Optimisation wi
 origRes = sqrt(sum(observedData.^2,2));
 calibratedData = applyCalib(observedData,optimised);
 calibratedDataJ = applyCalib(observedData,calibCoeffs);
+calibratedDataJW = applyCalib(observedData,calibCoeffsw);
 calibRes = sqrt(sum(calibratedData.^2,2));
 calibResJ = sqrt(sum(calibratedDataJ.^2,2));
+calibResJW = sqrt(sum(calibratedDataJW.^2,2));
 disp(sprintf('Coeffs x %.3f %.3f y %.3f %.3f z %.3f %.3f orig e %.3f calib e %.3f',optimised(1),optimised(2),optimised(3),optimised(4),optimised(5),optimised(6),sqrt(sum((origRes-1).^2)),sqrt(sum((calibRes-1).^2))));
 disp(sprintf('Coeffs with Java x %.3f %.3f y %.3f %.3f z %.3f %.3f orig e %.3f calib e %.3f',calibCoeffs(1),calibCoeffs(2),calibCoeffs(3),calibCoeffs(4),calibCoeffs(5),calibCoeffs(6),sqrt(sum((origRes-1).^2)),sqrt(sum((calibResJ-1).^2))));
 
@@ -48,7 +50,11 @@ plot(origRes,'k');
 hold on;
 plot(calibRes,'r');
 plot(calibResJ,'g');
+plot(calibResJW,'g--');
 title('Resultant from the included epochs');
 
-figure,plot((calibResJ./calibRes).*100)
+figure
+plot((calibResJ./calibRes).*100,'r')
+hold on;
+plot((calibResJW./calibRes).*100,'g')
 title('Matlab resultant divided by BOBYQA Java optimisation');
