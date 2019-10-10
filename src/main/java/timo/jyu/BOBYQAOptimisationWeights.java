@@ -34,18 +34,14 @@ public class BOBYQAOptimisationWeights{
 				
 			}
 			
-			double weightSum = Utils.sum(weights);
+			double weightMean = Utils.sum(weights)/((double) weights.length);
 			double f = 0;	//Sum of squared residuals
 			//Calculate sum of weighted squared residuals
 			for (int i = 0;i<calibrated[0].length; ++i){
 				double diff=Math.sqrt(Math.pow(calibrated[0][i],2d)+Math.pow(calibrated[1][i],2d)+Math.pow(calibrated[2][i],2d))-1d;
-				f+=Math.sqrt(Math.pow(
-					diff*weights[i]/weightSum
-				,2d));
-				
+				f+=Math.pow(diff*weights[i]/weightMean,2d);
 				weights[i] = Math.abs(1d/diff) > 100d ? 100d : Math.abs(1d/diff);
 			}
-			
             return f;
         }
     }	
