@@ -33,4 +33,12 @@ public class Utils{
 		}
 		return b;
 	}
+	
+	public static double sum(double[] a){
+		double b = 0;
+		for (int i = 0;i<a.length; ++i){
+			b+= a[i];
+		}
+		return b;
+	}
 }

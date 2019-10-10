@@ -34,38 +34,23 @@ public class BOBYQAOptimisationWeights{
 				
 			}
 			
-			double[] diffs = new double[calibrated[0].length];
-			double[] tempWeights = new double[calibrated[0].length];
-			for (int i = 0;i<calibrated[0].length; ++i){
-				diffs[i]=Math.sqrt(Math.pow(calibrated[0][i],2d)+Math.pow(calibrated[1][i],2d)+Math.pow(calibrated[2][i],2d))-1d;
-				tempWeights[i] = Math.abs(1d/diffs[i]) > 100d ? 100d : Math.abs(1d/diffs[i]);
-			}
-			
-			
+			double weightSum = Utils.sum(weights);
 			double f = 0;	//Sum of squared residuals
 			//Calculate sum of weighted squared residuals
-			double weightSum = sum(weights);
-			for (int i = 0;i<diffs.length; ++i){
+			for (int i = 0;i<calibrated[0].length; ++i){
+				double diff=Math.sqrt(Math.pow(calibrated[0][i],2d)+Math.pow(calibrated[1][i],2d)+Math.pow(calibrated[2][i],2d))-1d;
 				f+=Math.sqrt(Math.pow(
-					diffs[i]*weights[i]/sum(weights)
+					diff*weights[i]/weightSum
 				,2d));
+				
+				weights[i] = Math.abs(1d/diff) > 100d ? 100d : Math.abs(1d/diff);
 			}
-		
-			//Update weights
-			for (int i = 0;i<tempWeights.length; ++i){
-				weights[i]=tempWeights[i];
-			}
+			
             return f;
         }
     }	
 	
-	private double sum(double[] a){
-		double b = 0;
-		for (int i = 0;i<a.length; ++i){
-			b+= a[i];
-		}
-		return b;
-	}
+
 	
 	public BOBYQAOptimisationWeights(double[][] acc){
 		this.acc = acc;
@@ -85,6 +70,10 @@ public class BOBYQAOptimisationWeights{
 		for (int i =0;i<initGuess.length; ++i){
 			fit[i] = result.getPoint()[i];
 		}
+	}
+	
+	public double[] getWeights(){
+		return weights;
 	}
 	
 	public double[] getFit(){

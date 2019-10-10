@@ -10,6 +10,8 @@ public class AccAutoCalib{
 	private double epochLength;	//[s] for feature extraction (10 used by van Hees et al). Data analysed in non-overlapping  epochs
 	private Features features; //Store features here
 	private double[][] toOptimisation = null;
+	private double[] lmWeights = null;
+	private double[] boWeights = null;
 	
 	/**Constructors
 	Store only features in this class -> can discard the raw data after instantiation*/
@@ -69,6 +71,7 @@ public class AccAutoCalib{
 			System.out.println("Sufficient data was not found to calibrate");
 			return null;
 		}
+		boWeights = bo.getWeights();
 		return bo.getFit();
 	}
 	
@@ -84,6 +87,26 @@ public class AccAutoCalib{
 		return bo.getFit();
 	}
 	
+	public double[] getWeightedLMFit(){
+		LMOptimisationWeights bo;
+		double[][] mm = {Utils.minmax(toOptimisation[0]),Utils.minmax(toOptimisation[1]),Utils.minmax(toOptimisation[2])};
+		if (Utils.max(new double[]{mm[0][0],mm[1][0],mm[2][0]}) < -0.3 && Utils.min(new double[]{mm[0][1],mm[1][1],mm[2][1]}) > 0.3){
+			bo = new LMOptimisationWeights(toOptimisation);
+		}else{
+			System.out.println("Sufficient data was not found to calibrate");
+			return null;
+		}
+		lmWeights = bo.getWeights();
+		return bo.getFit();
+	}
+	
+	public double[] getLMWeights(){
+		return lmWeights;
+	}
+	
+	public double[] getBoWeights(){
+		return boWeights;
+	}
 	
 	public double[] getOptimX(){
 		return toOptimisation[0];
